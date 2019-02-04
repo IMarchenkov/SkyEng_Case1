@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Case 1</title>
+</head>
+<body>
+<div class="flex">
+    <div id="num1"></div>
+    <div id="num2"></div>
+    <div id="sum"></div>
+</div>
+<style>
+    .flex {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: flex-end;
+        width: 100%;
+    }
+</style>
+<script>
+    (function () {
+        console.log('start');
+        let num1Placeholder = document.getElementById('num1');
+        let num2Placeholder = document.getElementById('num2');
+        let sumPlaceholder = document.getElementById('sum');
+
+        init = () => {
+
+            num1Placeholder.textContent = getRandom();
+            num2Placeholder.textContent = getRandom();
+            sumPlaceholder.textContent = getSum(num1Placeholder.textContent, num2Placeholder.textContent);
+        };
+
+        getSum = (num1, num2) => {
+
+            let num1Len = num1.length;
+            let num2Len = num2.length;
+            let reNum1 = reverseString(num1);
+            let reNum2 = reverseString(num2);
+
+            let sum = '';
+            let acc = 0;
+            let locSum = 0;
+            let maxLen = Math.max(num1Len, num2Len);
+            console.log('MaxLen: ' + maxLen);
+
+            for (let i = 0; i < maxLen; i++) {
+                locSum = Number(typeof reNum1[i] == "undefined" ? 0 : reNum1[i]) + Number(typeof reNum2[i] == "undefined" ? 0 : reNum2[i]) + acc;
+                sum += reverseString(locSum.toString())[0];
+                acc = locSum + acc > 9 ? 1 : 0;
+            }
+
+            return reverseString(sum);
+        };
+
+        getRandom = () => {
+            let num = (2 ** 64) * Math.random();
+            if (Math.random() > 0.5)
+                return num.toString();
+            else
+                return num.toString() + getRandom();
+        };
+
+        reverseString = (str) => str.split("").reverse().join("");
+
+        return init();
+    })()
+</script>
+</body>
+</html>
